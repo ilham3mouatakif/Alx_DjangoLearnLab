@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
-from .models import Book, Library
+from .models import Book
+from .models import Library
 
 # Function-based view to list all books
 @permission_required('relationship_app.can_view_book')
