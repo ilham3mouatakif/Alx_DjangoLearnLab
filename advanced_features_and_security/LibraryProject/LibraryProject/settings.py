@@ -144,10 +144,22 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 CSP_SCRIPT_SRC = ("'self'",)
 
 # HTTPS Settings
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True # Redirect all non-HTTPS requests to HTTPS
+
+# HTTP Strict Transport Security (HSTS)
+# Instructs functionality to only access the site via HTTPS for the specified duration (1 year)
+SECURE_HSTS_SECONDS = 31536000 
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True # Include all subdomains in the HSTS policy
+SECURE_HSTS_PRELOAD = True # Allow preloading of the HSTS site
+
+# Secure Cookie Settings (Already set in previous step, ensuring consistency)
+SESSION_COOKIE_SECURE = True # Ensure session cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True # Ensure CSRF cookies are only sent over HTTPS
+
+# Browser Security Headers
+X_FRAME_OPTIONS = 'DENY' # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True # Prevent MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True # Enable browser's XSS filtering
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

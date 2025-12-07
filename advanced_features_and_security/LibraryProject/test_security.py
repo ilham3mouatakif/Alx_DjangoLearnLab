@@ -44,6 +44,13 @@ def verify_security():
     else:
         print(f"FAIL: X-Content-Type-Options is {xcto}")
 
+    # Strict-Transport-Security
+    hsts = header_dict.get('Strict-Transport-Security')
+    if hsts:
+        print(f"PASS: HSTS Header present: {hsts}")
+    else:
+        print("FAIL: HSTS Header not found")
+
     # 2. Check CSRF
     print("\nChecking CSRF:")
     # Get the form page to set CSRF cookie
