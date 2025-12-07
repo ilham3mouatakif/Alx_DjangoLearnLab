@@ -1,17 +1,39 @@
-# LibraryProject
+# Permissions and Groups Setup
 
-This is a Django project for managing a library.
+This Django application uses custom permissions and groups to manage access control.
 
-## Getting Started
+## Custom Permissions
+Defined in `bookshelf/models.py` on the `Book` model:
+- `bookshelf.can_view`: Allows viewing book lists and details.
+- `bookshelf.can_create`: Allows creating new books.
+- `bookshelf.can_edit`: Allows editing existing books.
+- `bookshelf.can_delete`: Allows deleting books.
 
-1.  Navigate to the project directory:
-    ```bash
-    cd LibraryProject
-    ```
+## Groups
+Three groups are configured with specific permissions:
 
-2.  Run the development server:
-    ```bash
-    python manage.py runserver
-    ```
+1.  **Viewers**:
+    - Permissions: `can_view`
+    - Access: Can only view the list of books.
 
-3.  Access the application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+2.  **Editors**:
+    - Permissions: `can_create`, `can_edit`
+    - Access: Can create and edit books. cannot delete. (Note: Ensure they also have `can_view` if they need to see lists).
+
+3.  **Admins**:
+    - Permissions: `can_view`, `can_create`, `can_edit`, `can_delete`
+    - Access: Full control over books.
+
+## Configuration Script
+A script `setup_groups.py` is provided to automatically create these groups and assign permissions.
+Run it using:
+```bash
+python setup_groups.py
+```
+
+## Testing
+To verify permissions, run:
+```bash
+python test_permissions.py
+```
+This script creates test users for each group and verifies their access to the protected views.
