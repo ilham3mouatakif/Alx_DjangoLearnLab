@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 from .models import Book
+from .forms import ExampleForm
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -30,3 +31,24 @@ def book_delete(request, pk):
         book.delete()
         return HttpResponse("Book Deleted")
     return HttpResponse(f"Delete Book {book.title}")
+
+def example_form_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process form data securely
+            return HttpResponse("Form Submitted Securely")
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
+# Start of Selection
+def book_search(request):
+    query = request.GET.get('q')
+    if query:
+        # Secure: Using Django ORM filter prevents SQL injection
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+# End of Selection

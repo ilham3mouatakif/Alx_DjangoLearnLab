@@ -50,7 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
+    # 'csp.middleware.CSPMiddleware', # Using custom middleware instead
+    'bookshelf.middleware.ContentSecurityPolicyMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -139,6 +140,8 @@ SESSION_COOKIE_SECURE = True
 
 # Content Security Policy (requires django-csp)
 CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_SCRIPT_SRC = ("'self'",)
 
 # HTTPS Settings
 SECURE_SSL_REDIRECT = True
