@@ -144,6 +144,7 @@ CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 CSP_SCRIPT_SRC = ("'self'",)
 
 # HTTPS Settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True # Redirect all non-HTTPS requests to HTTPS
 
 # HTTP Strict Transport Security (HSTS)

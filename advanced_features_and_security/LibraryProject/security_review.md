@@ -6,6 +6,7 @@ This report details the security measures implemented in the Django application 
 ## Implemented Measures
 
 ### 1. HTTPS Enforcement
+- **Proxy Support**: Configured `SECURE_PROXY_SSL_HEADER` to trust `X-Forwarded-Proto` from reverse proxies.
 - **SSL Redirect**: All HTTP traffic is permanently redirected to HTTPS (`SECURE_SSL_REDIRECT = True`).
 - **HSTS**: HTTP Strict Transport Security is enabled for 1 year, including subdomains and preloading (`SECURE_HSTS_SECONDS`, `SECURE_HSTS_INCLUDE_SUBDOMAINS`, `SECURE_HSTS_PRELOAD`).
 - **Secure Cookies**: Session and CSRF cookies are flagged as secure, meaning they are never transmitted over unencrypted connections.
