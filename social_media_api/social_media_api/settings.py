@@ -84,6 +84,7 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
 }
+# Ensure DATABASE_URL sets the PORT appropriately
 
 
 # Password validation
