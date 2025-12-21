@@ -1,7 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, FeedView
-from .like_views import LikePostView, UnlikePostView
+from .views import PostViewSet, CommentViewSet, FeedView, LikePostView, UnlikePostView
 
 router = DefaultRouter()
 # ... existing registers ... don't change
