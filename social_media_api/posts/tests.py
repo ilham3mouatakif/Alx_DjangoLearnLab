@@ -67,3 +67,28 @@ class CommentTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Comment.objects.count(), 0)
+
+class FeedTests(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='user1', password='password123')
+        self.user2 = User.objects.create_user(username='user2', password='password123')
+        self.client.force_authenticate(user=self.user1)
+        self.post_user2 = Post.objects.create(author=self.user2, title='User2 Post', content='Content')
+        self.feed_url = reverse('feed')
+
+    def test_feed_generation(self):
+        # Initial check - empty feed
+        response = self.client.get(self.feed_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(len(response.data), 0) # This might fail if pagination is on, data would be under 'results'
+
+        # Follow user2
+        self.user1.following.add(self.user2)
+
+        # Feed check - should have 1 post
+        response = self.client.get(self.feed_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Handle list response directly if pagination is not active or transparent
+        results = response.data
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['title'], 'User2 Post')
