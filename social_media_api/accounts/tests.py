@@ -41,3 +41,28 @@ class AuthTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], 'testuser')
         self.assertEqual(response.data['bio'], 'Test Bio')
+
+class FollowTests(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='user1', password='password123')
+        self.user2 = User.objects.create_user(username='user2', password='password123')
+        self.client.force_authenticate(user=self.user1)
+        self.follow_url = reverse('follow_user', args=[self.user2.pk])
+        self.unfollow_url = reverse('unfollow_user', args=[self.user2.pk])
+
+    def test_follow_user(self):
+        response = self.client.post(self.follow_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(self.user1.following.filter(pk=self.user2.pk).exists())
+        self.assertTrue(self.user2.followers.filter(pk=self.user1.pk).exists())
+
+    def test_unfollow_user(self):
+        self.user1.following.add(self.user2)
+        response = self.client.post(self.unfollow_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(self.user1.following.filter(pk=self.user2.pk).exists())
+
+    def test_follow_self(self):
+        url = reverse('follow_user', args=[self.user1.pk])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
